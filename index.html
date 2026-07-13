@@ -1,18 +1,20 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedSchedule — Appointment Scheduler</title>
-<meta name="description" content="Book, track and manage patient appointments across doctors, hospitals and specialties.">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedSchedule Pro — Appointment Scheduler</title>
+  <meta name="description" content="A premium medical appointment scheduling platform. Book, track and manage patient appointments across doctors, hospitals and specialties.">
 
-<!-- Fonts: Space Grotesk (display), Inter (body/UI), IBM Plex Mono (dates/times/data) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <!-- Fonts: Inter (display/body/UI), JetBrains Mono (data) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/calendar.css">
-<link rel="stylesheet" href="css/modal.css">
-<link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/calendar.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
@@ -23,7 +25,7 @@
 
   <!-- ============ MOBILE HEADER TOGGLE ============ -->
   <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
   </button>
 
   <!-- ============ SIDEBAR ============ -->
@@ -33,22 +35,45 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="M9 15l2 2 4-4"></path></svg>
       </span>
       <span class="brand-text">MedSchedule</span>
+      <span class="brand-badge">PRO</span>
     </div>
 
     <nav class="sidebar-nav">
       <a href="#" class="nav-item is-active" data-view="calendar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </span>
         <span>Calendar</span>
+        <span class="nav-indicator"></span>
       </a>
       <a href="#" class="nav-item" data-view="list">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5" fill="currentColor"></circle><circle cx="4" cy="12" r="1.5" fill="currentColor"></circle><circle cx="4" cy="18" r="1.5" fill="currentColor"></circle></svg>
+        </span>
         <span>Appointments</span>
+        <span class="nav-indicator"></span>
       </a>
     </nav>
 
+    <!-- Stat Cards in Sidebar -->
+    <div class="sidebar-stats">
+      <div class="stat-card">
+        <span class="stat-value" id="statTotal">0</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat-card stat-today">
+        <span class="stat-value" id="statToday">0</span>
+        <span class="stat-label">Today</span>
+      </div>
+      <div class="stat-card stat-upcoming">
+        <span class="stat-value" id="statUpcoming">0</span>
+        <span class="stat-label">Upcoming</span>
+      </div>
+    </div>
+
     <div class="sidebar-footer">
       <div class="specialty-legend" aria-hidden="true">
-        <p class="legend-title">Specialty key</p>
+        <p class="legend-title">Specialty Key</p>
         <ul class="legend-list" id="legendList"><!-- populated by app.js --></ul>
       </div>
     </div>
@@ -67,11 +92,17 @@
       </div>
 
       <div class="header-actions">
+        <button class="icon-btn theme-toggle" id="themeToggleBtn" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <!-- Moon icon for light mode (switches to dark) -->
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <!-- Sun icon for dark mode (switches to light) -->
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
         <div class="search-field">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="search" id="searchInput" placeholder="Search patient or doctor" aria-label="Search by patient name or doctor name">
+          <input type="search" id="searchInput" placeholder="Search patient or doctor…" aria-label="Search by patient name or doctor name">
         </div>
-        <button class="btn btn-primary" id="openModalBtn" type="button">
+        <button class="btn btn-primary btn-glow" id="openModalBtn" type="button">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           <span>Book Appointment</span>
         </button>
@@ -81,18 +112,30 @@
     <!-- ============ FILTER BAR ============ -->
     <section class="filter-bar" aria-label="Filter appointments">
       <div class="filter-group">
-        <label for="filterDate">Date</label>
+        <label for="filterDate">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Date
+        </label>
         <input type="date" id="filterDate">
       </div>
       <div class="filter-group">
-        <label for="filterDateFrom">From</label>
+        <label for="filterDateFrom">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          From
+        </label>
         <input type="date" id="filterDateFrom">
       </div>
       <div class="filter-group">
-        <label for="filterDateTo">To</label>
+        <label for="filterDateTo">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          To
+        </label>
         <input type="date" id="filterDateTo">
       </div>
-      <button class="btn btn-ghost btn-small" id="clearFiltersBtn" type="button">Clear filters</button>
+      <button class="btn btn-ghost btn-small" id="clearFiltersBtn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        Clear filters
+      </button>
     </section>
 
     <main id="main-content">
@@ -112,7 +155,10 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
             </div>
-            <button class="btn btn-outline btn-small" id="todayBtn" type="button">Today</button>
+            <button class="btn btn-outline btn-small" id="todayBtn" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              Today
+            </button>
           </div>
 
           <div class="weekday-row" aria-hidden="true">
@@ -152,10 +198,15 @@
           <ul class="appointments-cardlist" id="appointmentsCardList"></ul>
 
           <div class="empty-state" id="emptyState" hidden="">
-            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="M9.5 15.5l1.8 1.8 3.2-3.5"></path></svg>
+            <div class="empty-icon-wrap">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="M9.5 15.5l1.8 1.8 3.2-3.5"></path></svg>
+            </div>
             <h3>No appointments yet</h3>
-            <p>Nothing on the books for this view. Book an appointment to get started.</p>
-            <button class="btn btn-primary" id="emptyStateBookBtn" type="button">Book Appointment</button>
+            <p>Your schedule is clear. Book your first appointment to get started.</p>
+            <button class="btn btn-primary btn-glow" id="emptyStateBookBtn" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Book Appointment
+            </button>
           </div>
         </div>
       </section>
@@ -168,8 +219,13 @@
 <div class="modal-overlay" id="modalOverlay" hidden="">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="appointmentModal">
     <div class="modal-header">
-      <h2 id="modalTitle">Book Appointment</h2>
-      <button class="icon-btn" id="closeModalBtn" type="button" aria-label="Close dialog">
+      <div class="modal-title-group">
+        <span class="modal-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="M9 15l2 2 4-4"></path></svg>
+        </span>
+        <h2 id="modalTitle">Book Appointment</h2>
+      </div>
+      <button class="icon-btn icon-btn-close" id="closeModalBtn" type="button" aria-label="Close dialog">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
@@ -178,26 +234,38 @@
       <input type="hidden" id="appointmentId" value="">
 
       <div class="form-row">
-        <label for="patientName">Patient Name <span class="req">*</span></label>
-        <input type="text" id="patientName" name="patientName" autocomplete="off" required="">
+        <label for="patientName">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Patient Name <span class="req">*</span>
+        </label>
+        <input type="text" id="patientName" name="patientName" autocomplete="off" required="" placeholder="Enter patient full name">
         <span class="field-error" id="err-patientName"></span>
       </div>
 
       <div class="form-row-group">
         <div class="form-row">
-          <label for="doctorName">Doctor Name <span class="req">*</span></label>
-          <input type="text" id="doctorName" name="doctorName" autocomplete="off" required="">
+          <label for="doctorName">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            Doctor Name <span class="req">*</span>
+          </label>
+          <input type="text" id="doctorName" name="doctorName" autocomplete="off" required="" placeholder="e.g. Dr. Smith">
           <span class="field-error" id="err-doctorName"></span>
         </div>
         <div class="form-row">
-          <label for="hospitalName">Hospital Name <span class="req">*</span></label>
-          <input type="text" id="hospitalName" name="hospitalName" autocomplete="off" required="">
+          <label for="hospitalName">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path><path d="M9 9h1"></path><path d="M9 13h1"></path><path d="M9 17h1"></path></svg>
+            Hospital Name <span class="req">*</span>
+          </label>
+          <input type="text" id="hospitalName" name="hospitalName" autocomplete="off" required="" placeholder="e.g. City Hospital">
           <span class="field-error" id="err-hospitalName"></span>
         </div>
       </div>
 
       <div class="form-row">
-        <label for="specialty">Specialty <span class="req">*</span></label>
+        <label for="specialty">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          Specialty <span class="req">*</span>
+        </label>
         <select id="specialty" name="specialty" required="">
           <option value="" disabled="" selected="">Select a specialty</option>
           <option value="Cardiology">Cardiology</option>
@@ -214,20 +282,29 @@
 
       <div class="form-row-group">
         <div class="form-row">
-          <label for="appointmentDate">Date <span class="req">*</span></label>
+          <label for="appointmentDate">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Date <span class="req">*</span>
+          </label>
           <input type="date" id="appointmentDate" name="appointmentDate" required="">
           <span class="field-error" id="err-appointmentDate"></span>
         </div>
         <div class="form-row">
-          <label for="appointmentTime">Time <span class="req">*</span></label>
+          <label for="appointmentTime">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Time <span class="req">*</span>
+          </label>
           <input type="time" id="appointmentTime" name="appointmentTime" required="">
           <span class="field-error" id="err-appointmentTime"></span>
         </div>
       </div>
 
       <div class="form-row">
-        <label for="reason">Reason <span class="req">*</span></label>
-        <textarea id="reason" name="reason" rows="3" required=""></textarea>
+        <label for="reason">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          Reason <span class="req">*</span>
+        </label>
+        <textarea id="reason" name="reason" rows="3" required="" placeholder="Describe the reason for the appointment…"></textarea>
         <span class="field-error" id="err-reason"></span>
       </div>
 
@@ -235,7 +312,10 @@
 
       <div class="modal-actions">
         <button type="button" class="btn btn-ghost" id="cancelModalBtn">Cancel</button>
-        <button type="submit" class="btn btn-primary" id="saveAppointmentBtn">Save Appointment</button>
+        <button type="submit" class="btn btn-primary btn-glow" id="saveAppointmentBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Save Appointment
+        </button>
       </div>
     </form>
   </div>
@@ -245,14 +325,22 @@
 <div class="modal-overlay" id="confirmOverlay" hidden="">
   <div class="modal modal-small" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmDesc">
     <div class="modal-header">
-      <h2 id="confirmTitle">Delete appointment?</h2>
+      <div class="modal-title-group">
+        <span class="modal-icon modal-icon-danger">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        </span>
+        <h2 id="confirmTitle">Delete appointment?</h2>
+      </div>
     </div>
     <div class="modal-body">
       <p id="confirmDesc">This will permanently remove the appointment. This action cannot be undone.</p>
     </div>
     <div class="modal-actions">
       <button type="button" class="btn btn-ghost" id="cancelDeleteBtn">Cancel</button>
-      <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+      <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+        Delete
+      </button>
     </div>
   </div>
 </div>
@@ -260,12 +348,17 @@
 <!-- ============ TOAST CONTAINER ============ -->
 <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
-<!-- ============ DAY DETAIL POPOVER (mobile/tap on day with overflow) ============ -->
+<!-- ============ DAY DETAIL POPOVER ============ -->
 <div class="modal-overlay" id="dayDetailOverlay" hidden="">
   <div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="dayDetailTitle">
     <div class="modal-header">
-      <h2 id="dayDetailTitle">Appointments</h2>
-      <button class="icon-btn" id="closeDayDetailBtn" type="button" aria-label="Close dialog">
+      <div class="modal-title-group">
+        <span class="modal-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </span>
+        <h2 id="dayDetailTitle">Appointments</h2>
+      </div>
+      <button class="icon-btn icon-btn-close" id="closeDayDetailBtn" type="button" aria-label="Close dialog">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>

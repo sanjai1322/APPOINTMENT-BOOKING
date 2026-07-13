@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MedSchedule — calendar.js
+   MedSchedule Pro — calendar.js
    Builds the monthly calendar grid from scratch (no plugin/library) and
    renders appointment chips inside each day cell.
    ========================================================================== */
@@ -24,8 +24,8 @@ function toDateKey(year, monthIndex, day) {
 }
 
 /**
- * Render the full month grid (always 6 rows so the layout never jumps
- * between months), including trailing/leading days from adjacent months.
+ * Render the full month grid, including trailing/leading days from
+ * adjacent months. Uses dynamic row count for a cleaner layout.
  * @param {number} year
  * @param {number} monthIndex zero-indexed (0 = January)
  * @param {Array<Object>} appointmentsForMonth appointments already scoped to this month
@@ -179,11 +179,12 @@ const closeDayDetailBtn = document.getElementById('closeDayDetailBtn');
 function openDayDetail(dateKey, appointments) {
   if (typeof closeAppointmentModal === "function") {
     closeAppointmentModal();
-}
+  }
 
-if (typeof closeConfirmDialog === "function") {
+  if (typeof closeConfirmDialog === "function") {
     closeConfirmDialog();
-}
+  }
+
   dayDetailTitle.textContent = formatDateDisplay(dateKey);
   dayDetailList.innerHTML = '';
 

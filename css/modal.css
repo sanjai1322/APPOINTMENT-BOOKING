@@ -1,17 +1,20 @@
 /* ==========================================================================
-   MedSchedule — modal.css
+   MedSchedule Pro — modal.css
    Overlay + dialog animation for the appointment form, delete confirm,
-   and day-detail popover
+   and day-detail popover — Premium dark glass theme
    ========================================================================== */
+
 /* Fix hidden attribute */
 [hidden] {
-    display: none !important;
+  display: none !important;
 }
+
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(18, 47, 43, 0.45);
-  backdrop-filter: blur(2px);
+  background: rgba(5, 8, 18, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,20 +30,37 @@
 
 .modal {
   background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(108, 92, 231, 0.08);
   width: 100%;
-  max-width: 520px;
+  max-width: 540px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  animation: modal-pop-in var(--transition-base) cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: modal-pop-in var(--transition-spring);
+  background-image: var(--gradient-card);
+  position: relative;
+  overflow: hidden;
 }
 
-.modal-small { max-width: 420px; }
+/* Subtle gradient overlay for modals */
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(108, 92, 231, 0.04) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.modal-small { max-width: 440px; }
 
 @keyframes modal-pop-in {
-  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
@@ -48,38 +68,74 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 24px 4px;
+  padding: 24px 28px 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modal-icon-danger {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
 }
 
 .modal-header h2 {
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .modal-body {
-  padding: 12px 24px 4px;
+  padding: 16px 28px 8px;
   color: var(--color-text-secondary);
-  font-size: 13.75px;
+  font-size: 14px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
 }
 
 .modal-form {
-  padding: 20px 24px 24px;
+  padding: 20px 28px 28px;
   overflow-y: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  padding: 16px 24px 24px;
+  padding: 16px 28px 28px;
+  position: relative;
+  z-index: 1;
 }
 
-.modal-small .modal-actions { padding-top: 20px; }
+.modal-small .modal-actions { padding-top: 24px; }
 
 /* scrollbar polish inside modal */
 .modal-form::-webkit-scrollbar,
-.day-detail-list::-webkit-scrollbar { width: 6px; }
+.day-detail-list::-webkit-scrollbar { width: 5px; }
+
+.modal-form::-webkit-scrollbar-track,
+.day-detail-list::-webkit-scrollbar-track { background: transparent; }
+
 .modal-form::-webkit-scrollbar-thumb,
 .day-detail-list::-webkit-scrollbar-thumb {
   background: var(--color-border-strong);

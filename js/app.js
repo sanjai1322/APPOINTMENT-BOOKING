@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MedSchedule — app.js
+   MedSchedule Pro — app.js
    Application bootstrap: shared state, formatting utilities, toasts,
    view switching, mobile nav, and the central refreshApp() render loop.
    Loaded last, after storage.js / calendar.js / appointments.js /
@@ -8,19 +8,20 @@
 
 /* ==========================================================================
    Specialty colour key — drives calendar chips, table pills, and legend
+   Vibrant neon-friendly palette for the dark theme
    ========================================================================== */
 
 const SPECIALTY_COLORS = {
-  'Cardiology': '#D64545',
-  'Dermatology': '#8B6FD1',
-  'Neurology': '#3D7FC7',
-  'Orthopedics': '#C6890B',
-  'Pediatrics': '#2F9E6E',
-  'General Medicine': '#1B6B63',
-  'Dentistry': '#2A9AA8',
-  'ENT': '#E8734A'
+  'Cardiology': '#ff6b6b',
+  'Dermatology': '#a855f7',
+  'Neurology': '#3b82f6',
+  'Orthopedics': '#f59e0b',
+  'Pediatrics': '#10b981',
+  'General Medicine': '#06b6d4',
+  'Dentistry': '#14b8a6',
+  'ENT': '#f97316'
 };
-const DEFAULT_SPECIALTY_COLOR = '#5C7772';
+const DEFAULT_SPECIALTY_COLOR = '#8891ab';
 
 function getSpecialtyColor(specialty) {
   return SPECIALTY_COLORS[specialty] || DEFAULT_SPECIALTY_COLOR;
@@ -72,7 +73,7 @@ const AppState = {
 };
 
 /* ==========================================================================
-   Toast notifications
+   Toast notifications — with icon and slide-in animation
    ========================================================================== */
 
 const toastContainer = document.getElementById('toastContainer');
@@ -84,15 +85,15 @@ const toastContainer = document.getElementById('toastContainer');
 function showToast(message, type) {
   const toast = document.createElement('div');
   toast.className = `toast toast-${type || 'info'}`;
-  const iconGlyph = type === 'success' ? '✓' : type === 'error' ? '!' : 'i';
+  const iconGlyph = type === 'success' ? '✓' : type === 'error' ? '✕' : 'i';
   toast.innerHTML = `<span class="toast-icon" aria-hidden="true">${iconGlyph}</span><span>${escapeHtml(message)}</span>`;
   toastContainer.appendChild(toast);
 
   requestAnimationFrame(() => toast.classList.add('is-visible'));
   setTimeout(() => {
     toast.classList.remove('is-visible');
-    setTimeout(() => toast.remove(), 250);
-  }, 3200);
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
 }
 
 /* ==========================================================================
@@ -203,6 +204,33 @@ function updateHeaderSubtitle() {
 }
 
 /* ==========================================================================
+   Sidebar statistics — total, today, upcoming counts
+   ========================================================================== */
+
+function updateSidebarStats() {
+  const allAppointments = AppState.appointments;
+  const todayNow = new Date();
+  const todayKey = toDateKey(todayNow.getFullYear(), todayNow.getMonth(), todayNow.getDate());
+
+  const totalCount = allAppointments.length;
+  const todayCount = allAppointments.filter(a => a.appointmentDate === todayKey).length;
+  const upcomingCount = allAppointments.filter(a => a.appointmentDate > todayKey).length;
+
+  document.getElementById('statTotal').textContent = totalCount;
+  document.getElementById('statToday').textContent = todayCount;
+  document.getElementById('statUpcoming').textContent = upcomingCount;
+
+  // Animate the numbers on update
+  ['statTotal', 'statToday', 'statUpcoming'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.animation = 'none';
+    requestAnimationFrame(() => {
+      el.style.animation = 'stat-pop 0.3s ease';
+    });
+  });
+}
+
+/* ==========================================================================
    Central refresh loop — the single place that reloads from storage,
    re-applies filters, and re-renders every view. Every CRUD action and
    every filter change ends by calling this.
@@ -225,6 +253,7 @@ function refreshApp() {
   renderCalendar(AppState.calendarYear, AppState.calendarMonth, monthAppointments);
   renderAppointmentsList(AppState.filtered);
   updateHeaderSubtitle();
+  updateSidebarStats();
 }
 
 /* ==========================================================================
@@ -234,26 +263,135 @@ function refreshApp() {
    ========================================================================== */
 
 function seedSampleDataIfFirstRun() {
-  const alreadySeeded = localStorage.getItem('medschedule.seeded.v1');
+  const alreadySeeded = localStorage.getItem('medschedule.seeded.v2');
   if (alreadySeeded) return;
-  localStorage.setItem('medschedule.seeded.v1', 'true');
+  localStorage.setItem('medschedule.seeded.v2', 'true');
   if (loadAppointments().length > 0) return;
 
   const now = new Date();
   const y = now.getFullYear();
   const m = now.getMonth();
   const lastDay = new Date(y, m + 1, 0).getDate();
-  const dateKey = (day) => `${y}-${pad2(m + 1)}-${pad2(Math.min(day, lastDay))}`;
+  const dateKey = (day) => `${y}-${pad2(m + 1)}-${pad2(Math.min(Math.max(day, 1), lastDay))}`;
 
   const sampleAppointments = [
-    { patientName: 'Ananya Rao', doctorName: 'Dr. Meera Nair', hospitalName: 'City Care Hospital', specialty: 'Cardiology', appointmentDate: dateKey(now.getDate() + 1), appointmentTime: '09:30', reason: 'Routine ECG follow-up' },
-    { patientName: 'Rahul Verma', doctorName: 'Dr. Arjun Iyer', hospitalName: 'Sunrise Clinic', specialty: 'Orthopedics', appointmentDate: dateKey(now.getDate() + 1), appointmentTime: '11:00', reason: 'Knee pain evaluation' },
-    { patientName: 'Priya Sharma', doctorName: 'Dr. Kavya Menon', hospitalName: 'City Care Hospital', specialty: 'Pediatrics', appointmentDate: dateKey(now.getDate()), appointmentTime: '14:00', reason: 'Scheduled vaccination' },
-    { patientName: 'Sanjay Gupta', doctorName: 'Dr. Meera Nair', hospitalName: 'City Care Hospital', specialty: 'Cardiology', appointmentDate: dateKey(now.getDate() + 4), appointmentTime: '10:00', reason: 'Chest pain consultation' },
-    { patientName: 'Divya Krishnan', doctorName: 'Dr. Farah Ali', hospitalName: 'Lakeview Medical Center', specialty: 'Dermatology', appointmentDate: dateKey(now.getDate() + 7), appointmentTime: '16:30', reason: 'Skin allergy check-up' }
+    { patientName: 'Ananya Rao', doctorName: 'Dr. Meera Nair', hospitalName: 'City Care Hospital', specialty: 'Cardiology', appointmentDate: dateKey(now.getDate() + 1), appointmentTime: '09:30', reason: 'Routine ECG follow-up and blood pressure monitoring' },
+    { patientName: 'Rahul Verma', doctorName: 'Dr. Arjun Iyer', hospitalName: 'Sunrise Clinic', specialty: 'Orthopedics', appointmentDate: dateKey(now.getDate() + 1), appointmentTime: '11:00', reason: 'Knee pain evaluation and X-ray review' },
+    { patientName: 'Priya Sharma', doctorName: 'Dr. Kavya Menon', hospitalName: 'City Care Hospital', specialty: 'Pediatrics', appointmentDate: dateKey(now.getDate()), appointmentTime: '14:00', reason: 'Scheduled vaccination for 6-month checkup' },
+    { patientName: 'Sanjay Gupta', doctorName: 'Dr. Meera Nair', hospitalName: 'City Care Hospital', specialty: 'Cardiology', appointmentDate: dateKey(now.getDate() + 4), appointmentTime: '10:00', reason: 'Chest pain consultation and stress test' },
+    { patientName: 'Divya Krishnan', doctorName: 'Dr. Farah Ali', hospitalName: 'Lakeview Medical Center', specialty: 'Dermatology', appointmentDate: dateKey(now.getDate() + 7), appointmentTime: '16:30', reason: 'Skin allergy check-up and treatment plan' },
+    { patientName: 'Vikram Patel', doctorName: 'Dr. Ravi Kumar', hospitalName: 'Apollo Hospital', specialty: 'Neurology', appointmentDate: dateKey(now.getDate() + 2), appointmentTime: '15:00', reason: 'Migraine frequency assessment and MRI review' },
+    { patientName: 'Sneha Reddy', doctorName: 'Dr. Priya Das', hospitalName: 'Sunrise Clinic', specialty: 'Dentistry', appointmentDate: dateKey(now.getDate()), appointmentTime: '10:30', reason: 'Root canal follow-up and crown fitting' }
   ];
 
   sampleAppointments.forEach((appointment) => createAppointment(appointment));
+}
+
+/* ==========================================================================
+   Add CSS animation keyframes dynamically
+   ========================================================================== */
+
+function addDynamicStyles() {
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    @keyframes stat-pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    .table-patient-name {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .table-date {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .table-time {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .table-today-badge {
+      display: inline-block;
+      margin-left: 6px;
+      background: var(--gradient-accent);
+      color: #0a0e1a;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 1px 6px;
+      border-radius: 100px;
+      vertical-align: middle;
+    }
+
+    .is-today-row {
+      background: rgba(0, 206, 201, 0.03) !important;
+    }
+
+    .is-today-row:hover {
+      background: rgba(0, 206, 201, 0.06) !important;
+    }
+
+    .is-today-card {
+      border-color: rgba(0, 206, 201, 0.2) !important;
+      background: rgba(0, 206, 201, 0.03) !important;
+    }
+  `;
+  document.head.appendChild(styleSheet);
+}
+
+/* ==========================================================================
+   Theme Toggling Logic
+   ========================================================================== */
+
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const moonIcon = themeToggleBtn?.querySelector('.moon-icon');
+const sunIcon = themeToggleBtn?.querySelector('.sun-icon');
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    if (moonIcon) moonIcon.style.display = 'none';
+    if (sunIcon) sunIcon.style.display = 'block';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    if (moonIcon) moonIcon.style.display = 'block';
+    if (sunIcon) sunIcon.style.display = 'none';
+  }
+  localStorage.setItem('medschedule.theme', theme);
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('medschedule.theme');
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else {
+    // Default to light
+    applyTheme('light');
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      applyTheme(isDark ? 'light' : 'dark');
+    });
+  }
 }
 
 /* ==========================================================================
@@ -261,6 +399,8 @@ function seedSampleDataIfFirstRun() {
    ========================================================================== */
 
 function initApp() {
+  initTheme();
+  addDynamicStyles();
   seedSampleDataIfFirstRun();
   renderLegend();
   refreshApp();

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MedSchedule — search.js
+   MedSchedule Pro — search.js
    Search by patient/doctor name, plus single-date and date-range filters.
    Pure filtering logic lives in applyFilters(); everything below it just
    keeps AppState in sync with the filter bar and triggers a re-render.

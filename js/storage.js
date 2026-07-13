@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MedSchedule — storage.js
+   MedSchedule Pro — storage.js
    Single responsibility: persist appointments to localStorage as JSON and
    expose CRUD primitives. No DOM access happens in this file.
    ========================================================================== */

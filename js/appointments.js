@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MedSchedule — appointments.js
+   MedSchedule Pro — appointments.js
    Renders the appointment list (desktop table + mobile card list) and
    owns the delete-confirmation flow. Editing/booking lives in modal.js.
    ========================================================================== */
@@ -50,8 +50,13 @@ function buildTableRow(appointment) {
   const row = document.createElement('tr');
   if (isDateInPast(appointment.appointmentDate)) row.classList.add('is-past');
 
+  const isToday = isSameDay(appointment.appointmentDate);
+  if (isToday) row.classList.add('is-today-row');
+
   row.innerHTML = `
-    <td data-label="Patient">${escapeHtml(appointment.patientName)}</td>
+    <td data-label="Patient">
+      <span class="table-patient-name">${escapeHtml(appointment.patientName)}</span>
+    </td>
     <td data-label="Doctor">${escapeHtml(appointment.doctorName)}</td>
     <td data-label="Hospital">${escapeHtml(appointment.hospitalName)}</td>
     <td data-label="Specialty">
@@ -59,8 +64,13 @@ function buildTableRow(appointment) {
         ${escapeHtml(appointment.specialty)}
       </span>
     </td>
-    <td data-label="Date">${formatDateDisplay(appointment.appointmentDate)}</td>
-    <td data-label="Time">${formatTimeDisplay(appointment.appointmentTime)}</td>
+    <td data-label="Date">
+      <span class="table-date">${formatDateDisplay(appointment.appointmentDate)}</span>
+      ${isToday ? '<span class="table-today-badge">Today</span>' : ''}
+    </td>
+    <td data-label="Time">
+      <span class="table-time">${formatTimeDisplay(appointment.appointmentTime)}</span>
+    </td>
     <td data-label="Reason" class="col-reason" title="${escapeHtml(appointment.reason)}">${escapeHtml(appointment.reason)}</td>
     <td data-label="Actions" class="col-actions"></td>
   `;
@@ -71,6 +81,10 @@ function buildTableRow(appointment) {
 function buildCard(appointment) {
   const card = document.createElement('li');
   card.className = 'appointment-card';
+  
+  const isToday = isSameDay(appointment.appointmentDate);
+  if (isToday) card.classList.add('is-today-card');
+
   card.innerHTML = `
     <div class="appointment-card-top">
       <span class="specialty-pill" style="--chip-color:${getSpecialtyColor(appointment.specialty)}">
@@ -119,6 +133,12 @@ function isDateInPast(dateKey) {
   return new Date(year, month - 1, day) < today;
 }
 
+function isSameDay(dateKey) {
+  const today = new Date();
+  const todayKey = toDateKey(today.getFullYear(), today.getMonth(), today.getDate());
+  return dateKey === todayKey;
+}
+
 /* ==========================================================================
    Delete — confirmation dialog + actual removal
    ========================================================================== */
@@ -128,21 +148,19 @@ const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
 
 let pendingDeleteId = null;
+
 function requestDeleteAppointment(id) {
+  if (typeof closeAppointmentModal === "function") {
+    closeAppointmentModal();
+  }
 
-    if (typeof closeAppointmentModal === "function") {
-        closeAppointmentModal();
-    }
+  if (typeof closeDayDetail === "function") {
+    closeDayDetail();
+  }
 
-    if (typeof closeDayDetail === "function") {
-        closeDayDetail();
-    }
-
-    pendingDeleteId = id;
-
-    confirmOverlay.hidden = false;
-
-    confirmDeleteBtn.focus();
+  pendingDeleteId = id;
+  confirmOverlay.hidden = false;
+  confirmDeleteBtn.focus();
 }
 
 function closeConfirmDialog() {
@@ -164,7 +182,7 @@ confirmDeleteBtn.addEventListener('click', () => {
   closeConfirmDialog();
 
   if (wasDeleted) {
-    showToast('Appointment deleted.', 'success');
+    showToast('Appointment deleted successfully.', 'success');
     refreshApp();
   } else {
     showToast('Could not delete that appointment.', 'error');

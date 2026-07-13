@@ -1,37 +1,59 @@
 /* ==========================================================================
-   MedSchedule — calendar.css
+   MedSchedule Pro — calendar.css
    Monthly calendar grid, day cells, appointment chips, day-detail popover
+   Premium dark theme with glowing accents
    ========================================================================== */
 
 .calendar-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
-  padding: 20px;
+  padding: 24px;
+  background-image: var(--gradient-card);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle gradient overlay on the card */
+.calendar-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(108, 92, 231, 0.06) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .calendar-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
   flex-wrap: wrap;
   gap: 12px;
+  position: relative;
+  z-index: 1;
 }
 
 .month-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .current-month {
-  font-size: 18px;
-  font-weight: 700;
-  min-width: 168px;
+  font-size: 20px;
+  font-weight: 800;
+  min-width: 180px;
   text-align: center;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ---- weekday header row ---- */
@@ -40,17 +62,19 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   padding: 0 2px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .weekday-row span {
   text-align: center;
-  font-size: 11.5px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-secondary);
-  padding: 6px 0;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  padding: 8px 0;
 }
 
 /* ---- grid ---- */
@@ -59,57 +83,81 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .day-cell {
   position: relative;
-  min-height: 112px;
-  background: var(--color-surface);
+  min-height: 118px;
+  background: rgba(255,255,255,0.02);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 8px;
+  border-radius: var(--radius-md);
+  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .day-cell.is-clickable { cursor: pointer; }
+
 .day-cell.is-clickable:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-light);
+  background: rgba(108, 92, 231, 0.05);
+  box-shadow: 0 0 0 3px var(--color-primary-light), inset 0 0 20px rgba(108, 92, 231, 0.03);
+  transform: translateY(-1px);
 }
 
 .day-cell.is-outside {
-  background: var(--color-surface-sunken);
-  opacity: 0.55;
+  background: rgba(0,0,0,0.15);
+  opacity: 0.4;
+  border-color: transparent;
 }
+
 .day-cell.is-outside .day-number { color: var(--color-text-muted); }
 
 .day-cell.is-today {
   border-color: var(--color-accent);
-  background: var(--color-accent-light);
+  background: rgba(0, 206, 201, 0.06);
+  box-shadow: 0 0 0 1px rgba(0, 206, 201, 0.15), inset 0 0 20px rgba(0, 206, 201, 0.03);
+}
+
+.day-cell.is-today:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 206, 201, 0.15), 0 0 20px rgba(0, 206, 201, 0.1);
 }
 
 .day-number {
   font-family: var(--font-mono);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text);
+}
+
+.day-cell.is-today .day-number {
+  color: var(--color-accent-dark);
 }
 
 .today-badge {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: var(--color-accent);
-  color: #fff;
-  font-size: 9.5px;
-  font-weight: 700;
+  background: var(--gradient-accent);
+  color: #0a0e1a;
+  font-size: 9px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 2px 7px;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
   border-radius: 100px;
+  box-shadow: 0 2px 8px rgba(0, 206, 201, 0.3);
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { box-shadow: 0 2px 8px rgba(0, 206, 201, 0.3); }
+  50% { box-shadow: 0 2px 16px rgba(0, 206, 201, 0.5); }
 }
 
 .day-appointments {
@@ -123,20 +171,24 @@
   display: flex;
   flex-direction: column;
   gap: 1px;
-  background: color-mix(in srgb, var(--chip-color, var(--color-primary)) 12%, white);
+  background: color-mix(in srgb, var(--chip-color, var(--color-primary)) 12%, transparent);
   border-left: 3px solid var(--chip-color, var(--color-primary));
-  border-radius: 4px;
-  padding: 3px 6px;
+  border-radius: 6px;
+  padding: 4px 8px;
   cursor: pointer;
-  transition: transform var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
-.appointment-chip:hover { transform: translateX(1px); filter: brightness(0.97); }
+.appointment-chip:hover {
+  transform: translateX(2px);
+  background: color-mix(in srgb, var(--chip-color, var(--color-primary)) 18%, transparent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--chip-color, var(--color-primary)) 20%, transparent);
+}
 
 .chip-time {
   font-family: var(--font-mono);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--chip-color, var(--color-primary));
 }
 
@@ -159,16 +211,22 @@
 
 .day-more-btn {
   align-self: flex-start;
-  background: none;
+  background: rgba(108, 92, 231, 0.1);
   border: none;
   color: var(--color-primary);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   cursor: pointer;
-  padding: 2px 4px;
+  padding: 2px 8px;
   font-family: var(--font-mono);
+  border-radius: 100px;
+  transition: all var(--transition-fast);
 }
-.day-more-btn:hover { text-decoration: underline; }
+
+.day-more-btn:hover {
+  background: rgba(108, 92, 231, 0.2);
+  color: #fff;
+}
 
 /* ==========================================================================
    Day-detail popover contents
@@ -180,16 +238,24 @@
   gap: 10px;
   max-height: 60vh;
   overflow-y: auto;
+  padding: 4px 0 8px;
 }
 
 .day-detail-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px;
+  gap: 14px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.02);
   border: 1px solid var(--color-border);
   border-left: 3px solid var(--chip-color, var(--color-primary));
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.day-detail-item:hover {
+  background: rgba(108, 92, 231, 0.04);
+  border-color: var(--color-border-strong);
 }
 
 .day-detail-time {
@@ -197,13 +263,13 @@
   font-size: 12px;
   font-weight: 700;
   color: var(--chip-color, var(--color-primary));
-  min-width: 76px;
+  min-width: 80px;
 }
 
 .day-detail-info { flex: 1; min-width: 0; }
 
 .day-detail-patient {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--color-text);
 }
@@ -211,7 +277,7 @@
 .day-detail-meta {
   font-size: 12px;
   color: var(--color-text-secondary);
-  margin-top: 2px;
+  margin-top: 3px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -219,6 +285,6 @@
 
 .day-detail-actions {
   display: flex;
-  gap: 2px;
+  gap: 4px;
   flex-shrink: 0;
 }

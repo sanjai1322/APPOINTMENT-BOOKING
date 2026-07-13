@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MedSchedule — modal.js
+   MedSchedule Pro — modal.js
    Owns the Book/Edit Appointment modal: opening in create vs. edit mode,
    client-side validation, and the Create/Update write path.
    ========================================================================== */
@@ -26,7 +26,6 @@ const FORM_FIELD_IDS = [
  * @param {string} [prefillDate] 'YYYY-MM-DD'
  */
 function openCreateModal(prefillDate) {
-
   if (typeof closeDayDetail === "function") {
     closeDayDetail();
   }
@@ -40,7 +39,10 @@ function openCreateModal(prefillDate) {
   clearFormErrors();
 
   modalTitleEl.textContent = "Book Appointment";
-  saveAppointmentBtn.textContent = "Save Appointment";
+  saveAppointmentBtn.innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    Save Appointment
+  `;
 
   if (prefillDate) {
     document.getElementById("appointmentDate").value = prefillDate;
@@ -50,15 +52,11 @@ function openCreateModal(prefillDate) {
   document.getElementById("patientName").focus();
 }
 
-
-    
-
 /**
  * Open the modal pre-filled with an existing appointment's data ("edit" mode).
  * @param {string} id
  */
 function openEditAppointment(id) {
-
   if (typeof closeDayDetail === "function") {
     closeDayDetail();
   }
@@ -88,13 +86,15 @@ function openEditAppointment(id) {
   document.getElementById("reason").value = appointment.reason;
 
   modalTitleEl.textContent = "Edit Appointment";
-  saveAppointmentBtn.textContent = "Update Appointment";
+  saveAppointmentBtn.innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    Update Appointment
+  `;
 
   modalOverlay.hidden = false;
 }
 
 function closeAppointmentModal() {
-  
   modalOverlay.hidden = true;
   appointmentForm.reset();
   clearFormErrors();
@@ -117,7 +117,14 @@ function setFieldError(id, message) {
   const errorEl = document.getElementById('err-' + id);
   const inputEl = document.getElementById(id);
   if (errorEl) errorEl.textContent = message;
-  if (inputEl) inputEl.classList.add('is-invalid');
+  if (inputEl) {
+    inputEl.classList.add('is-invalid');
+    // Subtle shake animation on invalid fields
+    inputEl.style.animation = 'none';
+    requestAnimationFrame(() => {
+      inputEl.style.animation = 'shake 0.4s ease';
+    });
+  }
 }
 
 /**
@@ -184,10 +191,10 @@ function handleAppointmentSubmit(event) {
 
   if (editingId) {
     updateAppointmentById(editingId, data);
-    showToast('Appointment updated.', 'success');
+    showToast('Appointment updated successfully!', 'success');
   } else {
     createAppointment(data);
-    showToast('Appointment booked.', 'success');
+    showToast('Appointment booked successfully!', 'success');
   }
 
   closeAppointmentModal();
@@ -216,5 +223,6 @@ FORM_FIELD_IDS.forEach((id) => {
     const errorEl = document.getElementById('err-' + id);
     if (errorEl) errorEl.textContent = '';
     inputEl.classList.remove('is-invalid');
+    inputEl.style.animation = '';
   });
 });
