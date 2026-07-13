@@ -1,0 +1,87 @@
+/* ==========================================================================
+   MedSchedule — modal.css
+   Overlay + dialog animation for the appointment form, delete confirm,
+   and day-detail popover
+   ========================================================================== */
+/* Fix hidden attribute */
+[hidden] {
+    display: none !important;
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 47, 43, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+  animation: overlay-fade-in var(--transition-base) ease;
+}
+
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: modal-pop-in var(--transition-base) cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-small { max-width: 420px; }
+
+@keyframes modal-pop-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px 4px;
+}
+
+.modal-header h2 {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.modal-body {
+  padding: 12px 24px 4px;
+  color: var(--color-text-secondary);
+  font-size: 13.75px;
+}
+
+.modal-form {
+  padding: 20px 24px 24px;
+  overflow-y: auto;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px 24px;
+}
+
+.modal-small .modal-actions { padding-top: 20px; }
+
+/* scrollbar polish inside modal */
+.modal-form::-webkit-scrollbar,
+.day-detail-list::-webkit-scrollbar { width: 6px; }
+.modal-form::-webkit-scrollbar-thumb,
+.day-detail-list::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 100px;
+}

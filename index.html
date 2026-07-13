@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedSchedule — Appointment Scheduler</title>
+<meta name="description" content="Book, track and manage patient appointments across doctors, hospitals and specialties.">
+
+<!-- Fonts: Space Grotesk (display), Inter (body/UI), IBM Plex Mono (dates/times/data) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/calendar.css">
+<link rel="stylesheet" href="css/modal.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<!-- ============ SKIP LINK (ACCESSIBILITY) ============ -->
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="app-shell">
+
+  <!-- ============ MOBILE HEADER TOGGLE ============ -->
+  <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+  </button>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+    <div class="sidebar-brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="M9 15l2 2 4-4"></path></svg>
+      </span>
+      <span class="brand-text">MedSchedule</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item is-active" data-view="calendar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <span>Calendar</span>
+      </a>
+      <a href="#" class="nav-item" data-view="list">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        <span>Appointments</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="specialty-legend" aria-hidden="true">
+        <p class="legend-title">Specialty key</p>
+        <ul class="legend-list" id="legendList"><!-- populated by app.js --></ul>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main-column">
+
+    <!-- ============ HEADER ============ -->
+    <header class="app-header">
+      <div class="header-title-group">
+        <h1 class="header-title">Appointments</h1>
+        <p class="header-subtitle" id="headerSubtitle">Loading schedule…</p>
+      </div>
+
+      <div class="header-actions">
+        <div class="search-field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="search" id="searchInput" placeholder="Search patient or doctor" aria-label="Search by patient name or doctor name">
+        </div>
+        <button class="btn btn-primary" id="openModalBtn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Book Appointment</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============ FILTER BAR ============ -->
+    <section class="filter-bar" aria-label="Filter appointments">
+      <div class="filter-group">
+        <label for="filterDate">Date</label>
+        <input type="date" id="filterDate">
+      </div>
+      <div class="filter-group">
+        <label for="filterDateFrom">From</label>
+        <input type="date" id="filterDateFrom">
+      </div>
+      <div class="filter-group">
+        <label for="filterDateTo">To</label>
+        <input type="date" id="filterDateTo">
+      </div>
+      <button class="btn btn-ghost btn-small" id="clearFiltersBtn" type="button">Clear filters</button>
+    </section>
+
+    <main id="main-content">
+
+      <!-- ============ CALENDAR VIEW ============ -->
+      <section class="view-panel is-active" id="calendarView" aria-labelledby="calendarHeading">
+        <h2 class="sr-only" id="calendarHeading">Monthly calendar</h2>
+
+        <div class="calendar-card">
+          <div class="calendar-toolbar">
+            <div class="month-nav">
+              <button class="icon-btn" id="prevMonthBtn" type="button" aria-label="Previous month">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              <h3 class="current-month" id="currentMonthLabel">Month Year</h3>
+              <button class="icon-btn" id="nextMonthBtn" type="button" aria-label="Next month">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+            <button class="btn btn-outline btn-small" id="todayBtn" type="button">Today</button>
+          </div>
+
+          <div class="weekday-row" aria-hidden="true">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+
+          <div class="calendar-grid" id="calendarGrid" role="grid" aria-labelledby="currentMonthLabel">
+            <!-- day cells injected by calendar.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ LIST / TABLE VIEW ============ -->
+      <section class="view-panel" id="listView" aria-labelledby="listHeading">
+        <h2 class="sr-only" id="listHeading">Appointment list</h2>
+
+        <div class="table-card">
+          <table class="appointments-table" id="appointmentsTable">
+            <thead>
+              <tr>
+                <th scope="col">Patient</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Hospital</th>
+                <th scope="col">Specialty</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Reason</th>
+                <th scope="col" class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="appointmentsTableBody">
+              <!-- rows injected by appointments.js -->
+            </tbody>
+          </table>
+
+          <!-- mobile card list, mirrors table data on small screens -->
+          <ul class="appointments-cardlist" id="appointmentsCardList"></ul>
+
+          <div class="empty-state" id="emptyState" hidden="">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><path d="M9.5 15.5l1.8 1.8 3.2-3.5"></path></svg>
+            <h3>No appointments yet</h3>
+            <p>Nothing on the books for this view. Book an appointment to get started.</p>
+            <button class="btn btn-primary" id="emptyStateBookBtn" type="button">Book Appointment</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ============ APPOINTMENT MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay" hidden="">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="appointmentModal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Book Appointment</h2>
+      <button class="icon-btn" id="closeModalBtn" type="button" aria-label="Close dialog">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <form id="appointmentForm" class="modal-form" novalidate="">
+      <input type="hidden" id="appointmentId" value="">
+
+      <div class="form-row">
+        <label for="patientName">Patient Name <span class="req">*</span></label>
+        <input type="text" id="patientName" name="patientName" autocomplete="off" required="">
+        <span class="field-error" id="err-patientName"></span>
+      </div>
+
+      <div class="form-row-group">
+        <div class="form-row">
+          <label for="doctorName">Doctor Name <span class="req">*</span></label>
+          <input type="text" id="doctorName" name="doctorName" autocomplete="off" required="">
+          <span class="field-error" id="err-doctorName"></span>
+        </div>
+        <div class="form-row">
+          <label for="hospitalName">Hospital Name <span class="req">*</span></label>
+          <input type="text" id="hospitalName" name="hospitalName" autocomplete="off" required="">
+          <span class="field-error" id="err-hospitalName"></span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="specialty">Specialty <span class="req">*</span></label>
+        <select id="specialty" name="specialty" required="">
+          <option value="" disabled="" selected="">Select a specialty</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Dermatology">Dermatology</option>
+          <option value="Neurology">Neurology</option>
+          <option value="Orthopedics">Orthopedics</option>
+          <option value="Pediatrics">Pediatrics</option>
+          <option value="General Medicine">General Medicine</option>
+          <option value="Dentistry">Dentistry</option>
+          <option value="ENT">ENT</option>
+        </select>
+        <span class="field-error" id="err-specialty"></span>
+      </div>
+
+      <div class="form-row-group">
+        <div class="form-row">
+          <label for="appointmentDate">Date <span class="req">*</span></label>
+          <input type="date" id="appointmentDate" name="appointmentDate" required="">
+          <span class="field-error" id="err-appointmentDate"></span>
+        </div>
+        <div class="form-row">
+          <label for="appointmentTime">Time <span class="req">*</span></label>
+          <input type="time" id="appointmentTime" name="appointmentTime" required="">
+          <span class="field-error" id="err-appointmentTime"></span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="reason">Reason <span class="req">*</span></label>
+        <textarea id="reason" name="reason" rows="3" required=""></textarea>
+        <span class="field-error" id="err-reason"></span>
+      </div>
+
+      <div class="form-general-error" id="formGeneralError" hidden=""></div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelModalBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveAppointmentBtn">Save Appointment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ DELETE CONFIRM DIALOG ============ -->
+<div class="modal-overlay" id="confirmOverlay" hidden="">
+  <div class="modal modal-small" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmDesc">
+    <div class="modal-header">
+      <h2 id="confirmTitle">Delete appointment?</h2>
+    </div>
+    <div class="modal-body">
+      <p id="confirmDesc">This will permanently remove the appointment. This action cannot be undone.</p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="cancelDeleteBtn">Cancel</button>
+      <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST CONTAINER ============ -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ============ DAY DETAIL POPOVER (mobile/tap on day with overflow) ============ -->
+<div class="modal-overlay" id="dayDetailOverlay" hidden="">
+  <div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="dayDetailTitle">
+    <div class="modal-header">
+      <h2 id="dayDetailTitle">Appointments</h2>
+      <button class="icon-btn" id="closeDayDetailBtn" type="button" aria-label="Close dialog">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul class="day-detail-list" id="dayDetailList"></ul>
+    </div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/appointments.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+
+</body></html>
